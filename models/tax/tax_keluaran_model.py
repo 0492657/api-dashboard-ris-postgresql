@@ -10,7 +10,15 @@ class TaxKeluaranModel(Base):
 
     customer_code = Column(String, primary_key=True)
     invoice_no = Column(String)
+    company_code = Column(String)
     outlet_code = Column(String)
+    trx_code = Column(String)
+    peyment_type = Column(String)
+    amount_curr = Column(Numeric(15, 2), nullable=True)
+    currency_code = Column(String)
+    currency_rate = Column(String)
+    periode = Column(String)
+    invoice_date = Column(TIMESTAMP(timezone=True), nullable=True)
     invoice_no = Column(String, ForeignKey("public.schdinvd.invoice_no"), ForeignKey("public.k_promosih.invoice_no"))
     customer_code = Column(String, ForeignKey("public.supplier.supplier_code"), primary_key=True)
 
@@ -33,6 +41,7 @@ class SchdinvdModel(Base):
 
     customer_id = Column(String, primary_key=True)
     invoice_no = Column(String, primary_key=True)
+    agreement_no = Column(String)
 
     tax_keluaran = relationship(
         "TaxKeluaranModel",
@@ -65,6 +74,10 @@ class DistcustModel(Base):
     customer_code = Column(String, primary_key=True)
     distcustnum = Column(String)
     name_tax = Column(String)
+    address_tax = Column(String)
+    city_tax = Column(String)
+    postcode_tax = Column(String)
+    npwp_tax = Column(String)
     distcustnum = Column(String)
     distcustnum = Column(String, ForeignKey("public.k_promosih.distcustnum"))
 

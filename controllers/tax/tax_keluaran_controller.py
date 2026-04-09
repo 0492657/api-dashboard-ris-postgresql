@@ -1,6 +1,7 @@
 from repositories.tax.tax_keluaran_repository import get_tax_keluaran_repository, create_tax_keluaran_repository
 from schemas.tax.tax_keluaran_schema import TaxKeluaranCreate
 from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import date
 
 async def get_tax_keluaran_controller(db: AsyncSession, limit: int = 10):
     try:
@@ -18,9 +19,9 @@ async def get_tax_keluaran_controller(db: AsyncSession, limit: int = 10):
             "message": str(e)
         }
     
-async def create_tax_keluaran_controller(db: AsyncSession, create_tax: TaxKeluaranCreate):
+async def create_tax_keluaran_controller(db: AsyncSession, start_date: date, end_date: date, invoice_no: str, outlet_code: str, tr_code: str, customer_id: int):
     try:
-        data = await create_tax_keluaran_repository(create_tax=create_tax, db=db)
+        data = await create_tax_keluaran_repository(db, start_date, end_date, invoice_no, outlet_code, tr_code, customer_id)
         
         return {
             "status": True,
