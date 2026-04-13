@@ -42,6 +42,7 @@ class SchdinvdModel(Base):
 
     customer_id = Column(String, primary_key=True)
     invoice_no = Column(String, primary_key=True)
+    agreement_no = Column(String)
 
     tax_keluaran = relationship(
         "TaxKeluaranModel",

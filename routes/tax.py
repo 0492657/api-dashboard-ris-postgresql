@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from schemas.tax.tax_masukan_schema import TaxResponse, UpdateTax, TaxCreate, UpdateTaxResponse, TaxNonapCreate, CreateTaxResponse
-from schemas.tax.tax_keluaran_schema import TaxKeluaranResponse, CreateTaxKeluaranResponse, TaxKeluaranCreate
+from schemas.tax.tax_keluaran_schema import TaxKeluaranResponse, CreateTaxKeluaranResponse, TaxKeluaranCreate, TaxKeluaranCreateBase
 from controllers.tax.tax_masukan_controller import get_tax_bahan_controller, update_tax_bahan_controller, get_tax_nonap_controller, create_tax_nonap_controller, update_tax_nonap_controller
 from controllers.tax.tax_keluaran_controller import get_tax_keluaran_controller, create_tax_keluaran_controller
 from app.database import engine, Base, get_db, async_session
