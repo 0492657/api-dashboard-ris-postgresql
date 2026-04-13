@@ -42,6 +42,6 @@ async def get_tax_keluaran(db: AsyncSession = Depends(get_db), limit: int = 10):
     return result
 
 @router.post("/tax-keluaran/post", response_model=CreateTaxKeluaranResponse, tags=["tax keluaran"])
-async def create_tax_keluaran(create_tax: TaxKeluaranCreate, db: AsyncSession = Depends(get_db)):
-    result = await create_tax_keluaran_controller(create_tax=create_tax, db=db)
+async def create_tax_keluaran(start_date: date, end_date: date, invoice_no: str, outlet_code: str, tr_code: str, customer_id: str, db: AsyncSession = Depends(get_db)):
+    result = await create_tax_keluaran_controller(start_date=start_date, end_date=end_date, invoice_no=invoice_no, outlet_code=outlet_code, tr_code=tr_code, customer_id=customer_id, db=db)
     return result

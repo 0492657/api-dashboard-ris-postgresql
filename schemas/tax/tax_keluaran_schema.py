@@ -23,22 +23,15 @@ class TaxKeluaranCreateBase(BaseModel):
     company_code: Optional[int] = 0
     outlet_code: str
     customer_id: str
-    agreement_no: str
     invoice_no: str
     invoice_date: Optional[datetime] = None
     type_date: str
-    inv_tax_date: Optional[datetime] = None
-    tax_series_no: str
     dpp: Optional[Decimal] = None
     ppn: Optional[Decimal] = None
     pph23: Optional[Decimal] = None
     after_tax: Optional[Decimal] = None
-    flag_print: Optional[int] = 0
-    process_tax_out: Optional[int] = 0
     user_create: str = "SYSTEM"
     date_create: Optional[datetime] = None
-    user_modified: str = "SYSTEM"
-    date_modified: Optional[datetime] = None
     npwp: str
     name: str
     address: str
@@ -49,11 +42,10 @@ class TaxKeluaranCreateBase(BaseModel):
     tr_code: str
     remark: str
     pph23_auto: Optional[Decimal] = None
-    status_ap: str
-    RELEASE: Optional[Decimal] = None
-    tgl_input: Optional[datetime] = None
     npwp_potong: str
     kwitansi_no: str
+    user_create: str
+    date_create: Optional[datetime] = None
 
 class TaxKeluaranCreate(TaxKeluaranCreateBase):
     pass
@@ -64,3 +56,4 @@ class TaxKeluaranCreate(TaxKeluaranCreateBase):
 class CreateTaxKeluaranResponse(BaseModel):
     status: bool
     message: str
+    data: list[TaxKeluaranCreateBase]
