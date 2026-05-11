@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import date, datetime
 from decimal import Decimal
 import logging
+from fastapi import HTTPException
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -29,12 +30,18 @@ async def get_tax_keluaran_repository(db: AsyncSession):
             'name': tax.name,
             'npwp': tax.npwp,
             'tax_series_no': tax.tax_series_no,
-            'dpp': tax.dpp,
-            'dpp_nilai_lain': round(tax.dpp * (11 / 12)),
-            'ppn': tax.ppn,
             'process_tax_out': tax.process_tax_out,
+            'address': tax.address,
+            'city': tax.city_nm,
+            'postcode': tax.postcode,
+            'status_ap': tax.status_ap,
+            'store_code': tax.outlet_code,
+            'tgl_input': tax.tgl_input,
+            'inv_tax_date': tax.inv_tax_date,
             'user_create': tax.user_create,
-            'date_create': tax.date_create
+            'date_create': tax.date_create,
+            'user_modified': tax.user_modified,
+            'date_modified': tax.date_modified
         })
     return result
 
@@ -86,6 +93,15 @@ async def create_tax_keluaran_repository(db: AsyncSession, start_date: date, end
             amount = tax.amount_curr if tax.amount_curr else Decimal('0')
             dpp = amount / Decimal('1.11')
             ppn = amount - dpp
+
+            new_data = await db.execute(select(ArpjkoModel).where(ArpjkoModel.invoice_no == invoice_no))
+            existing_data = new_data.all()
+
+            if existing_data:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Data sudah pernah ditambahkan"
+                )
             
             new_post = ArpjkoModel(
                 company_code= int(tax.company_code) or 0,

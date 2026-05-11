@@ -2,6 +2,7 @@ from repositories.tax.tax_keluaran_repository import get_tax_keluaran_repository
 from schemas.tax.tax_keluaran_schema import TaxKeluaranCreate
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import date
+from fastapi import HTTPException
 
 async def get_tax_keluaran_controller(db: AsyncSession):
     try:
@@ -28,8 +29,12 @@ async def create_tax_keluaran_controller(db: AsyncSession, start_date: date, end
             "message": "Data berhasil ditambahkan",
             "data": data
         }
+    
+    except HTTPException as e:
+        raise e
+    
     except Exception as e:
-        return {
-            "status": False,
-            "message": str(e)
-        }
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )

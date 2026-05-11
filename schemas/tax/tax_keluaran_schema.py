@@ -11,12 +11,18 @@ class TaxKeluaranBase(BaseModel):
     name: Optional[str] = None
     npwp: Optional[str] = None
     tax_series_no: Optional[str] = None
-    dpp: Optional[Decimal] = None
-    dpp_nilai_lain: Optional[Decimal] = None
-    ppn: Optional[Decimal] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    postcode: Optional[str] = None
+    status_ap: str
+    store_code: str
+    tgl_input: Optional[str] = None
+    inv_tax_date: Optional[str] = None
     process_tax_out: Optional[int] = 0
     user_create: str
     date_create: str
+    user_modified: Optional[str] = None
+    date_modified: Optional[str] = None
 
     class Config:
         orm_mode = True
