@@ -1,7 +1,7 @@
 from models.tax.tax_keluaran_model import TaxKeluaranModel, SchdinvdModel, KPromosiModel, DistcustModel, ArpjkoModel
 from models.supplier.supplier_model import SupplierModel
 # from sqlalchemy.future import select, and_
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, or_, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import date, datetime
 from decimal import Decimal
@@ -11,14 +11,14 @@ from fastapi import HTTPException
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-async def get_tax_keluaran_repository(db: AsyncSession):
-    tax_keluaran = await db.execute(
-        select(ArpjkoModel)
-        .order_by(ArpjkoModel.date_create.desc())
-        .limit(1)
-    )
-
-    data = tax_keluaran.scalars().all()
+async def get_tax_keluaran_repository(db: AsyncSession, start_date: date, end_date: date, invoice_no: str, customer_id: str, tr_code: str):
+    tax_keluaran = await db.execute(select(ArpjkoModel).where(
+        ArpjkoModel.invoice_no == invoice_no,
+        ArpjkoModel.customer_id == customer_id,
+        ArpjkoModel.tr_code == tr_code,
+        func.date(ArpjkoModel.invoice_date).between(start_date, end_date)
+    ))
+    data = tax_keluaran.scalars().first()
 
     result = []
     for tax in data:
@@ -36,6 +36,7 @@ async def get_tax_keluaran_repository(db: AsyncSession):
             'postcode': tax.postcode,
             'status_ap': tax.status_ap,
             'store_code': tax.outlet_code,
+            'tr_code': tax.tr_code,
             'tgl_input': tax.tgl_input,
             'inv_tax_date': tax.inv_tax_date,
             'user_create': tax.user_create,
@@ -94,8 +95,13 @@ async def create_tax_keluaran_repository(db: AsyncSession, start_date: date, end
             dpp = amount / Decimal('1.11')
             ppn = amount - dpp
 
-            new_data = await db.execute(select(ArpjkoModel).where(ArpjkoModel.invoice_no == invoice_no))
-            existing_data = new_data.all()
+            new_data = await db.execute(select(ArpjkoModel).where(
+                ArpjkoModel.invoice_no == tax.invoice_no,
+                ArpjkoModel.customer_id == tax.customer_code,
+                ArpjkoModel.tr_code == tax.trx_code,
+                func.date(ArpjkoModel.invoice_date) == tax.invoice_date
+            ))
+            existing_data = new_data.scalars().first()
 
             if existing_data:
                 raise HTTPException(

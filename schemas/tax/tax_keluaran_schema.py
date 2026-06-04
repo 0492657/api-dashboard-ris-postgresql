@@ -16,6 +16,7 @@ class TaxKeluaranBase(BaseModel):
     postcode: Optional[str] = None
     status_ap: str
     store_code: str
+    tr_code: str
     tgl_input: Optional[str] = None
     inv_tax_date: Optional[str] = None
     process_tax_out: Optional[int] = 0

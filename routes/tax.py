@@ -36,8 +36,8 @@ async def update_tax_nonap(faktur_rmy: str, update_tax: TaxNonapCreate, db: Asyn
     return result
 
 @router.get("/tax-keluaran/get", response_model=TaxKeluaranResponse, tags=["tax keluaran"])
-async def get_tax_keluaran(db: AsyncSession = Depends(get_db)):
-    result = await get_tax_keluaran_controller(db)
+async def get_tax_keluaran(start_date: date, end_date: date, invoice_no: str, customer_id: str, tr_code: str, db: AsyncSession = Depends(get_db)):
+    result = await get_tax_keluaran_controller(start_date=start_date, end_date=end_date, invoice_no=invoice_no, customer_id=customer_id, tr_code=tr_code, db=db)
     return result
 
 @router.post("/tax-keluaran/post", response_model=CreateTaxKeluaranResponse, tags=["tax keluaran"])
