@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
-from schemas.employee.master_employee_schema import MasterEmployeeResponse
+from schemas.employee.master_employee_schema import MasterEmployeeResponse, SearchEmployeeResponse
 from typing import List
-from controllers.employee.master_employee_controller import get_master_employee_controller, get_employee_spg_controller, get_employee_pkl_controller, get_employee_terminate_controller
+from controllers.employee.master_employee_controller import get_master_employee_controller, get_employee_spg_controller, get_employee_pkl_controller, get_employee_terminate_controller, get_search_employee_controller
 from app.database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from schemas.employee.master_brand_schema import MasterBrandResponse, MasterSupplierResponse
@@ -15,6 +15,11 @@ router = APIRouter()
 @router.get("/master-employee/get-employee", response_model=MasterEmployeeResponse)
 async def get_master_employee(db: AsyncSession = Depends(get_db)):
     result = await get_master_employee_controller(db)
+    return result
+
+@router.get("/master-employee/search-employee")
+async def get_search_employee(params: str, db: AsyncSession = Depends(get_db)):
+    result = await get_search_employee_controller(db, params)
     return result
 
 @router.get("/master-employee/get-spg", response_model=MasterEmployeeResponse)

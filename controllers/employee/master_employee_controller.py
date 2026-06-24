@@ -1,4 +1,5 @@
-from repositories.employee.master_employee_repository import get_master_employee_repository, get_employee_spg_repository, get_employee_pkl_repository, get_employee_terminate_repository
+from repositories.employee.master_employee_repository import get_master_employee_repository, get_employee_spg_repository, get_employee_pkl_repository, get_employee_terminate_repository, get_search_employee_repository
+from services.employee.master_employee_service import get_search_employee_service
 from sqlalchemy.ext.asyncio import AsyncSession
 
 async def get_master_employee_controller(db: AsyncSession):
@@ -11,6 +12,17 @@ async def get_master_employee_controller(db: AsyncSession):
             "total_data": len(data),
             "data": data
         }
+    except Exception as e:
+        return {
+            "status": False,
+            "message": str(e)
+        }
+    
+async def get_search_employee_controller(db: AsyncSession, kategori_karyawan: str):
+    try:
+        data = await get_search_employee_service(db, kategori_karyawan)
+
+        return data
     except Exception as e:
         return {
             "status": False,

@@ -38,3 +38,9 @@ class MasterEmployeeResponse(BaseModel):
     message: str
     total_data: int
     data: list[MasterEmployee]
+
+class SearchEmployeeResponse(BaseModel):
+    status: bool
+    message: str
+    total_data: int
+    data: list[MasterEmployeeBase]

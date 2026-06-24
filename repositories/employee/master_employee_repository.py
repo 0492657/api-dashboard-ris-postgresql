@@ -11,6 +11,12 @@ async def get_master_employee_repository(db: AsyncSession):
     data = result.scalars().all()
     return data
 
+async def get_search_employee_repository(db: AsyncSession, kategori_karyawan: str):
+    result = await db.execute(select(MasterEmployeeModel).where(MasterEmployeeModel.kategori_karyawan == kategori_karyawan).order_by(MasterEmployeeModel.id_employee.desc()))
+
+    data = result.scalars().all()
+    return data
+
 async def get_employee_spg_repository(db: AsyncSession):
     result = await db.execute(select(MasterEmployeeModel).where(MasterEmployeeModel.status_aktif == '0', MasterEmployeeModel.kategori_karyawan == 'SPG').order_by(MasterEmployeeModel.id_employee.desc()))
     
