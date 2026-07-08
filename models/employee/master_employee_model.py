@@ -33,4 +33,15 @@ class MasterEmployeeModel(Base):
 
     def __repr__(self):
         return f"<MasterEmployeeModel (id_employee={self.id_employee}, supplier='{self.supplier}')>"
+    
+class MasterStoreCodeModel(Base):
+    __tablename__ = "p_c_x_homebase_tbl"
+    __table_args__ = {"schema": "public"}
+
+    company_id = Column(String, primary_key=True)
+    homebase = Column(String)
+    homebase_terminal_id = Column(String)
+
+    def __repr__(self):
+        return f"<MasterStoreCodeModel (homebase_terminal_id={self.homebase_terminal_id}, homebase='{self.homebase}')>"
 
