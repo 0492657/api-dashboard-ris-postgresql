@@ -23,11 +23,32 @@ class MasterEmployeeBase(BaseModel):
     md_emp: Optional[str] = None
     brand_emp: Optional[str] = None
     tanggal_selesai: Optional[datetime] = None
-    user_create: Optional[str] = None
+    user_create: Optional[str] = "SYSTEM"
     date_create: Optional[datetime] = None
 
-class AddMasterEmployee(MasterEmployeeBase):
+class BodyMasterEmployeeBase(BaseModel):
+    image_employee: Optional[str] = None
+    nama: Optional[str] = None
+    tanggal_lahir: Optional[datetime] = None
+    kategori_karyawan: Optional[str] = None
+    alamat: Optional[str] = None
+    kode_toko: Optional[str] = None
+    supplier: Optional[str] = None
+    no_handphone: Optional[str] = Field(None, alias="no_handphone")
+    tanggal_masuk: Optional[datetime] = None
+    no_kk: Optional[str] = None
+    no_ktp: Optional[str] = None
+    jenis_kelamin: Optional[str] = None
+    status: Optional[str] = None
+    user_create: Optional[str] = "SYSTEM"
+    date_create: Optional[datetime] = None
+
+class AddMasterEmployee(BodyMasterEmployeeBase):
     pass
+
+class AddMasterEmployeeResponse(BaseModel):
+    status: bool
+    message: str
 
 class MasterEmployee(MasterEmployeeBase):
     id_employee: Optional[str] = None

@@ -1,6 +1,8 @@
-from repositories.employee.master_employee_repository import get_master_employee_repository, get_employee_spg_repository, get_employee_pkl_repository, get_employee_terminate_repository, get_search_employee_repository, get_store_code_repository
+from repositories.employee.master_employee_repository import get_master_employee_repository,create_master_employee_repository,get_employee_spg_repository, get_employee_pkl_repository, get_employee_terminate_repository, get_search_employee_repository, get_store_code_repository
 from services.employee.master_employee_service import get_search_employee_service
 from sqlalchemy.ext.asyncio import AsyncSession
+from schemas.employee.master_employee_schema import AddMasterEmployee
+from services.employee.master_employee_service import create_master_employee_service
 
 async def get_master_employee_controller(db: AsyncSession):
     try:
@@ -10,6 +12,21 @@ async def get_master_employee_controller(db: AsyncSession):
             "status": True,
             "message": 'OK',
             "total_data": len(data),
+            "data": data
+        }
+    except Exception as e:
+        return {
+            "status": False,
+            "message": str(e)
+        }
+    
+async def create_master_employee_controller(data: AddMasterEmployee, db: AsyncSession):
+    try:
+        data = await create_master_employee_service(data=data, db=db)
+
+        return {
+            "status": True,
+            "message": "Data berhasil ditambahkan",
             "data": data
         }
     except Exception as e:
